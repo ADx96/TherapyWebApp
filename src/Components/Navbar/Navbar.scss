@@ -1,0 +1,26 @@
+.Navbar {
+  .title {
+    text-align: center;
+    position: inherit;
+    margin-top: -56px;
+  }
+  .card {
+    background-color: var(--surface-a);
+    height: 70px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    -webkit-box-shadow: 0 0 4px (0 0 0 / 25%);
+    box-shadow: 0 0 4px (0 0 0 / 25%);
+    border-bottom: 1px solid var(--surface-d);
+    padding: 0 35px;
+  }
+
+  .p-menubar {
+    padding: 0.5rem;
+    background: transparent;
+    color: #495057;
+    border: none;
+    border-radius: 3px;
+  }
+}

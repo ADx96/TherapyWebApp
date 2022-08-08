@@ -1,0 +1,74 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,300,700");
+$clouds: #020202;
+$midnight: #2c3e50;
+$wisteria: #8e44ad;
+
+.Language-Button {
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #020202;
+  }
+  h1 {
+    margin: 0 0 1em;
+    color: blue;
+  }
+  .group {
+    display: flex;
+    align-items: center;
+  }
+  input[type="checkbox"],
+  input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+  }
+  label {
+    position: relative;
+    margin-right: 1em;
+    padding-left: 2em;
+    padding-right: 1em;
+    line-height: 2;
+
+    cursor: pointer;
+    &:before {
+      box-sizing: border-box;
+      content: " ";
+      position: absolute;
+      top: 0.3em;
+      left: 0;
+      display: block;
+      width: 1.4em;
+      height: 1.4em;
+      border: 2px solid #0a477f;
+      border-radius: 0.25em;
+    }
+  }
+  input[type="radio"] + label::before {
+    border-radius: 1em;
+  }
+  /* Checked */
+  input[type="checkbox"]:checked + label,
+  input[type="radio"]:checked + label {
+    padding-left: 1em;
+    color: white;
+    z-index: 99999999;
+    &:before {
+      top: 0;
+      width: 100%;
+      z-index: -1;
+      height: 2em;
+      background: #0a477f;
+    }
+  }
+
+  /* Transition */
+  label,
+  label::before {
+    -webkit-transition: 0.25s all ease;
+    -o-transition: 0.25s all ease;
+
+    transition: 0.25s all ease;
+  }
+}
