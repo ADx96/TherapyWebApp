@@ -57,6 +57,8 @@
   "DeletedInspections": "DeletedInspections",
   "DeletedLocations": "Deleted Locations",
   "DeletedUsers": "Deleted Users",
+  "AllUsers": " All Users",
+  "Users Therapy": "All Users Therapy",
   "ReturnedSuccessfully": "the Return operation is Successful",
   "Return": "Return"
 }

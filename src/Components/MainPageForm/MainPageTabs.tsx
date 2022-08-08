@@ -21,7 +21,7 @@ const MainPageTabs: React.FC = () => {
 
   const Tabs = [
     {
-      title: "Suspended",
+      title: "Users Therapy",
       id: "Inspections",
       icon: <FaTable />,
       color: "#0b477f",

@@ -230,7 +230,6 @@ const Locations: React.FC = () => {
         <Toast ref={toast} />
         {!isMobile ? (
           <Toolbar
-            style={{ direction: "ltr" }}
             className="p-mb-4"
             right={rightToolbarTemplate}
             left={!isMobile ? leftToolbarTemplate : <></>}
@@ -268,7 +267,7 @@ const Locations: React.FC = () => {
           <Column
             field="NameAr"
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("NameAr")}</span>
                 {rowData.NameAr}
               </div>
@@ -279,7 +278,7 @@ const Locations: React.FC = () => {
           <Column
             field="NameEn"
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("NameEn")}</span>
                 {rowData.NameEn}
               </div>
@@ -289,7 +288,7 @@ const Locations: React.FC = () => {
           ></Column>
           <Column
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("Parant")}</span>
                 {rowData.parent?.NameEn}
               </div>
@@ -349,7 +348,7 @@ const Locations: React.FC = () => {
 
         <Dialog
           visible={deleteProductDialog}
-          style={{ width: "450px", direction: "ltr" }}
+          style={{ width: "450px" }}
           header={t("Confirm")}
           modal
           footer={deleteProductDialogFooter}

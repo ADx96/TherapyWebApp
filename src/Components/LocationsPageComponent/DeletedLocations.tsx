@@ -39,7 +39,7 @@ const DeletedLocations: React.FC<Props> = ({ fetch }) => {
   };
 
   const header = (
-    <div className="table-header" style={{ direction: "rtl" }}>
+    <div className="table-header">
       <h4 style={{ width: "20vw" }} className="p-mx-0 p-my-1">
         {t("DeletedLocations")}
       </h4>
@@ -127,7 +127,7 @@ const DeletedLocations: React.FC<Props> = ({ fetch }) => {
           <Column
             field="NameAr"
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("NameAr")}</span>
                 {rowData.NameAr}
               </div>
@@ -138,7 +138,7 @@ const DeletedLocations: React.FC<Props> = ({ fetch }) => {
           <Column
             field="NameEn"
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("NameEn")}</span>
                 {rowData.NameEn}
               </div>
@@ -148,7 +148,7 @@ const DeletedLocations: React.FC<Props> = ({ fetch }) => {
           ></Column>
           <Column
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("Parant")}</span>
                 {rowData.parent?.NameEn}
               </div>

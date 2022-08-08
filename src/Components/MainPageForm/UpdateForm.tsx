@@ -139,7 +139,6 @@ const UpdateForm: React.FC<Props> = ({
           <div className="p-field p-col">
             <label htmlFor="quantity">{t("CaseDate")}</label>
             <Calendar
-              style={{ direction: "ltr" }}
               id="icon"
               dateFormat="mm/dd/yy"
               showTime={false}
@@ -168,7 +167,6 @@ const UpdateForm: React.FC<Props> = ({
           <div className="p-field p-col">
             <label htmlFor="quantity"> {t("InspectionDate")}</label>
             <Calendar
-              style={{ direction: "ltr" }}
               id="icon"
               dateFormat="mm/dd/yy"
               touchUI={true}
@@ -206,7 +204,7 @@ const UpdateForm: React.FC<Props> = ({
           </div>
         </div>
       </form>
-      <div style={{ display: "flex", direction: "ltr", width: "38%" }}>
+      <div style={{ display: "flex", width: "38%" }}>
         <Button
           label={t("Cancel")}
           icon="pi pi-times"

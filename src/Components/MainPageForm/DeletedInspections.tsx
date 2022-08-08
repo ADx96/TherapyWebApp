@@ -40,7 +40,7 @@ const DeletedInspections: React.FC<Props> = ({ fetch }) => {
   };
 
   const header = (
-    <div className="table-header" style={{ direction: "rtl" }}>
+    <div className="table-header">
       <h4 style={{ width: "20vw" }} className="p-mx-0 p-my-1">
         {t("DeletedInspections")}
       </h4>
@@ -128,7 +128,7 @@ const DeletedInspections: React.FC<Props> = ({ fetch }) => {
           <Column
             headerStyle={{ width: "10em" }}
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("CivilID")}</span>
                 {rowData.civilId}
               </div>
@@ -141,7 +141,7 @@ const DeletedInspections: React.FC<Props> = ({ fetch }) => {
           <Column
             headerStyle={{ width: "10em" }}
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("Establishment")}</span>
                 {rowData.Establishment}
               </div>
@@ -151,7 +151,7 @@ const DeletedInspections: React.FC<Props> = ({ fetch }) => {
           ></Column>
           <Column
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">
                   {t("InspectionFileNumber")}
                 </span>
@@ -163,7 +163,7 @@ const DeletedInspections: React.FC<Props> = ({ fetch }) => {
           ></Column>
           <Column
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("InspectionResult")}</span>
                 {rowData.InspectionResult}
               </div>
@@ -174,7 +174,7 @@ const DeletedInspections: React.FC<Props> = ({ fetch }) => {
           <Column
             field="date1"
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("CaseDate")}</span>
                 {rowData.date1}
               </div>
@@ -183,7 +183,7 @@ const DeletedInspections: React.FC<Props> = ({ fetch }) => {
           ></Column>
           <Column
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("InspectionType")}</span>
                 {rowData.InspectionType}
               </div>
@@ -194,7 +194,7 @@ const DeletedInspections: React.FC<Props> = ({ fetch }) => {
           <Column
             filterMatchMode="custom"
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("InspectionDate")}</span>
                 {new Date(rowData.date2).toLocaleDateString("en-US", {
                   month: "2-digit",
@@ -211,7 +211,7 @@ const DeletedInspections: React.FC<Props> = ({ fetch }) => {
             filterPlaceholder={t("Search")}
             header={t("NotificationNumber")}
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">
                   {t("NotificationNumber")}
                 </span>
@@ -221,7 +221,7 @@ const DeletedInspections: React.FC<Props> = ({ fetch }) => {
           ></Column>
           <Column
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("SaveFile")}</span>
                 {rowData.SaveFile}
               </div>
@@ -231,7 +231,7 @@ const DeletedInspections: React.FC<Props> = ({ fetch }) => {
           ></Column>
           <Column
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("Transferred")}</span>
                 {rowData.TransferredInspection === null ? "NO" : "YES"}
               </div>
@@ -241,7 +241,7 @@ const DeletedInspections: React.FC<Props> = ({ fetch }) => {
           ></Column>
           <Column
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("LocationSave")}</span>
                 {rowData.Location}
               </div>

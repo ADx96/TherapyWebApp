@@ -58,7 +58,7 @@ const LoginForm: React.FC = () => {
           </div>
         </div>
         <div className="right_side">
-          <i className="pi pi-times close"></i>
+          <i className="pi pi-times close" onClick={() => setOpen(false)}></i>
           <div className="heading">
             <h3>Login</h3>
             <p>test</p>

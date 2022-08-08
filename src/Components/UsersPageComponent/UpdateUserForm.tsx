@@ -98,7 +98,7 @@ const UpdateUsersForm: React.FC<Props> = ({
           </div>
         </div>
       </form>
-      <div style={{ display: "flex", direction: "ltr", width: "38%" }}>
+      <div style={{ display: "flex", width: "38%" }}>
         <Button
           label={t("Cancel")}
           icon="pi pi-times"

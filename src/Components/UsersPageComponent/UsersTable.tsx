@@ -352,7 +352,6 @@ const UsersTable: React.FC = () => {
   const renderStatusFilter = () => {
     return (
       <Dropdown
-        style={{ direction: "ltr" }}
         options={statuses}
         onChange={(e: any) => {
           dt.current.filter(e.value, "isAdmin", "equals");
@@ -395,7 +394,6 @@ const UsersTable: React.FC = () => {
         <Toast ref={toast} />
         {!isMobile ? (
           <Toolbar
-            style={{ direction: "ltr" }}
             className="p-mb-4"
             right={rightToolbarTemplate}
             left={!isMobile ? leftToolbarTemplate : <></>}
@@ -509,7 +507,7 @@ const UsersTable: React.FC = () => {
         </Dialog>
         <Dialog
           visible={deleteProductDialog}
-          style={{ width: "450px", direction: "ltr" }}
+          style={{ width: "450px" }}
           header={t("Confirm")}
           modal
           footer={deleteProductDialogFooter}

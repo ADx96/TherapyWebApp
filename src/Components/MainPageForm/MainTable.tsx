@@ -64,7 +64,7 @@ const MainTable: React.FC = () => {
 
   const header = (
     <div className="table-header">
-      <h5 className="p-m-0"> {t("AllInspections")}</h5>
+      <h5 className="p-m-0"> {t("Users Therapy")}</h5>
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
         <InputText
@@ -141,48 +141,6 @@ const MainTable: React.FC = () => {
 
   const exportCSV = () => {
     dt.current.exportCSV();
-  };
-
-  const leftToolbarTemplate = () => {
-    return (
-      <React.Fragment>
-        <Button
-          label={t("New")}
-          icon="pi pi-plus"
-          className="p-button-success p-mr-2"
-          onClick={openNew}
-        />
-        {authStore.user?.isAdmin ? (
-          <Button
-            label={t("Transfer")}
-            icon="pi pi-plus"
-            disabled={selectedProducts.length === 0 ? true : false}
-            className="p-button-success p-mr-2"
-            onClick={openTransfer}
-          />
-        ) : (
-          <></>
-        )}
-        {authStore.user?.isAdmin ? (
-          <Button
-            label={t("Deleted")}
-            icon="pi pi-plus"
-            className="p-button-success p-mr-2"
-            onClick={() => setReturnDialog(true)}
-          />
-        ) : (
-          <></>
-        )}
-        <Button
-          label={t("Order")}
-          icon="pi pi-plus"
-          className="p-button-success p-mr-2"
-          onClick={() =>
-            toggle === false ? setToggle(true) : setToggle(false)
-          }
-        />
-      </React.Fragment>
-    );
   };
 
   const importExcel = (e: any) => {
@@ -454,17 +412,11 @@ const MainTable: React.FC = () => {
       <div className="datatable-doc-demo">
         <Toast ref={toast} />
         {!isMobile ? (
-          <Toolbar
-            style={{ direction: "ltr" }}
-            className="p-mb-4"
-            right={rightToolbarTemplate}
-            left={!isMobile ? leftToolbarTemplate : <></>}
-          ></Toolbar>
+          <Toolbar className="p-mb-4" right={rightToolbarTemplate}></Toolbar>
         ) : (
           <Toolbar
             left={rightToolbarTemplate}
             style={{
-              direction: "ltr",
               justifyContent: "center",
               alignItems: "center",
             }}
@@ -497,7 +449,7 @@ const MainTable: React.FC = () => {
           <Column
             headerStyle={{ width: "10em" }}
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("CivilID")}</span>
                 {rowData.civilId}
               </div>
@@ -511,7 +463,7 @@ const MainTable: React.FC = () => {
           <Column
             headerStyle={{ width: "10em" }}
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("Establishment")}</span>
                 {rowData.Establishment}
               </div>
@@ -521,7 +473,7 @@ const MainTable: React.FC = () => {
           ></Column>
           <Column
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">
                   {t("InspectionFileNumber")}
                 </span>
@@ -533,7 +485,7 @@ const MainTable: React.FC = () => {
           ></Column>
           <Column
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("InspectionResult")}</span>
                 {rowData.InspectionResult}
               </div>
@@ -551,7 +503,7 @@ const MainTable: React.FC = () => {
             filterFunction={filterDate}
             filterElement={DateFilter}
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("CaseDate")}</span>
                 {new Date(rowData.date1).toLocaleDateString("en-US", {
                   month: "2-digit",
@@ -564,7 +516,7 @@ const MainTable: React.FC = () => {
           ></Column>
           <Column
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("InspectionType")}</span>
                 {rowData.InspectionType}
               </div>
@@ -580,7 +532,7 @@ const MainTable: React.FC = () => {
             filterFunction={filterDate}
             filterElement={DateFilter2}
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("InspectionDate")}</span>
                 {new Date(rowData.date2).toLocaleDateString("en-US", {
                   month: "2-digit",
@@ -598,7 +550,7 @@ const MainTable: React.FC = () => {
             filterPlaceholder={t("Search")}
             header={t("NotificationNumber")}
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">
                   {t("NotificationNumber")}
                 </span>
@@ -608,7 +560,7 @@ const MainTable: React.FC = () => {
           ></Column>
           <Column
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("SaveFile")}</span>
                 {rowData.SaveFile}
               </div>
@@ -618,7 +570,7 @@ const MainTable: React.FC = () => {
           ></Column>
           <Column
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("Transferred")}</span>
                 {rowData.TransferredInspection === null ? "NO" : "YES"}
               </div>
@@ -628,7 +580,7 @@ const MainTable: React.FC = () => {
           ></Column>
           <Column
             body={(rowData) => (
-              <div style={{ direction: "ltr" }}>
+              <div>
                 <span className="p-column-title">{t("LocationSave")}</span>
                 {rowData.Location}
               </div>
@@ -700,7 +652,7 @@ const MainTable: React.FC = () => {
         </Dialog>
         <Dialog
           visible={deleteProductDialog}
-          style={{ width: "450px", direction: "ltr" }}
+          style={{ width: "450px" }}
           header={t("Confirm")}
           modal
           footer={deleteProductDialogFooter}

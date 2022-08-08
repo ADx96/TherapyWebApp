@@ -41,7 +41,7 @@ const DeletedUsers: React.FC<Props> = ({ fetch }) => {
   };
 
   const header = (
-    <div className="table-header" style={{ direction: "rtl" }}>
+    <div className="table-header">
       <h4 style={{ width: "20vw" }} className="p-mx-0 p-my-1">
         {t("DeletedUsers")}
       </h4>
@@ -59,7 +59,7 @@ const DeletedUsers: React.FC<Props> = ({ fetch }) => {
 
   const statusBodyTemplate = (rowData: any) => {
     return (
-      <div style={{ direction: "ltr" }}>
+      <div>
         <span className="p-column-title">{t("Role")}</span>
         {rowData.isAdmin === true ? (
           <Badge
@@ -101,7 +101,7 @@ const DeletedUsers: React.FC<Props> = ({ fetch }) => {
   };
   const activityBodyTemplate = (rowData: any) => {
     return (
-      <div style={{ direction: "ltr" }}>
+      <div>
         <span className="p-column-title">{t("username")}</span>
         {rowData.username}
       </div>
@@ -110,7 +110,7 @@ const DeletedUsers: React.FC<Props> = ({ fetch }) => {
 
   const nameBodyTemplate = (rowData: any) => {
     return (
-      <div style={{ direction: "ltr" }}>
+      <div>
         <span className="p-column-title">{t("FullName")}</span>
         {rowData.fullName}
       </div>
@@ -119,7 +119,7 @@ const DeletedUsers: React.FC<Props> = ({ fetch }) => {
 
   const dateBodyTemplate = (rowData: any) => {
     return (
-      <div style={{ direction: "ltr" }}>
+      <div>
         <span className="p-column-title">Date</span>
         <span>
           {
