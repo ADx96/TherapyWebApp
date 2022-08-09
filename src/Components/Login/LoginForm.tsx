@@ -64,7 +64,7 @@ const LoginForm: React.FC = () => {
             <p>test</p>
           </div>
 
-          <form>
+          <form onSubmit={handleSubmit}>
             <div style={{ display: "block" }}>
               <label htmlFor="email">Email*</label>
               <span className=" p-input-icon-right">

@@ -2,24 +2,18 @@ import React, { useState, useEffect, useRef } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
-import cookies from "js-cookie";
 import AddForm from "./AddForm";
 import { useMediaQuery } from "react-responsive";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { observer } from "mobx-react";
-import { MultiSelect } from "primereact/multiselect";
 import { Calendar } from "primereact/calendar";
 import { useTranslation } from "react-i18next";
 import inspectionStore from "../../Mobx/InspectionStore";
-import { FileUpload } from "primereact/fileupload";
 import { Toolbar } from "primereact/toolbar";
 import { Dialog } from "primereact/dialog";
 import "./MainTable.scss";
 import UpdateForm from "./UpdateForm";
-import TransferForm from "./TransferForm";
-import authStore from "../../Mobx/AuthStore";
-import DeletedInspections from "./DeletedInspections";
 
 const MainTable: React.FC = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 895px)" });
@@ -27,24 +21,14 @@ const MainTable: React.FC = () => {
   const [inspections, setInspections] = useState<any>([]);
   const [productDialog, setProductDialog] = useState(false);
   const [toggle, setToggle] = useState(false);
-  const [transferDialog, setTransferDialog] = useState(false);
   const [UpdateDialog, setUpdateDialog] = useState(false);
-  const [returnDialog, setReturnDialog] = useState(false);
-  const [deleteProductDialog, setDeleteProductDialog] = useState(false);
   const [product, setProduct] = useState<any>();
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [globalFilter, setGlobalFilter] = useState<any>(null);
   const [datefilter1, setDateFilter1] = useState<any>(null);
-  const [datefilter2, setDateFilter2] = useState<any>(null);
-  const [AllTypesFilter, setAllTypesFilter] = useState<any>(null);
-  const [allResultsFilter, setAllResultsFilter] = useState<any>(null);
 
   const toast = useRef<any>(null);
   const dt = useRef<any>(null);
-
-  const AllTypes = [{ name: "عمالة متجولة", value: "عمالة متجولة" }];
-
-  const AllResults = [{ name: "مخالفة", value: "مخالفة" }];
 
   useEffect(() => {
     async function fetchData() {
@@ -93,28 +77,6 @@ const MainTable: React.FC = () => {
     });
   };
 
-  const saveTransfer = () => {
-    fetch();
-    toast.current.show({
-      severity: "success",
-      summary: "Successful",
-      detail: t("InspectionTransferred"),
-      life: 3000,
-    });
-  };
-
-  const hideReturnDialog = () => {
-    setReturnDialog(false);
-  };
-
-  const openNew = () => {
-    setProductDialog(true);
-  };
-  const openTransfer = () => {
-    setProduct({ ...product });
-    setTransferDialog(true);
-  };
-
   const hideDialog = () => {
     setProductDialog(false);
   };
@@ -122,56 +84,9 @@ const MainTable: React.FC = () => {
   const hideUpdateDialog = () => {
     setUpdateDialog(false);
   };
-  const hideTransferDialog = () => {
-    setTransferDialog(false);
-  };
-  const hideDeleteProductDialog = () => {
-    setDeleteProductDialog(false);
-  };
-
-  const editProduct = (product: any) => {
-    setProduct({ ...product });
-    setUpdateDialog(true);
-  };
-
-  const confirmDeleteProduct = (product: any) => {
-    setProduct(product);
-    setDeleteProductDialog(true);
-  };
 
   const exportCSV = () => {
     dt.current.exportCSV();
-  };
-
-  const importExcel = (e: any) => {
-    const file = e.files[0];
-
-    import("xlsx").then((xlsx) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const wb = xlsx.read(e.target?.result, { type: "array" });
-        const wsname = wb.SheetNames[0];
-        const ws = wb.Sheets[wsname];
-        const data = xlsx.utils.sheet_to_json(ws, { header: 1 });
-
-        // Prepare DataTable
-        const cols: any = data[0];
-        data.shift();
-
-        let importedData = data.map((d: any) => {
-          return cols.reduce((obj: any, c: any, i: any) => {
-            obj[c] = d[i];
-            return obj;
-          }, {});
-        });
-
-        const _products = [...inspections, ...importedData];
-
-        setInspections(_products);
-      };
-
-      reader.readAsArrayBuffer(file);
-    });
   };
 
   const rightToolbarTemplate = () => {
@@ -179,14 +94,6 @@ const MainTable: React.FC = () => {
       <React.Fragment>
         {!isMobile ? (
           <>
-            <FileUpload
-              mode="basic"
-              maxFileSize={1000000}
-              chooseLabel={t("ImportCSV")}
-              className="p-mr-2 p-d-inline-block"
-              accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-              onUpload={importExcel}
-            />
             <Button
               label={t("Export")}
               icon="pi pi-upload"
@@ -196,28 +103,7 @@ const MainTable: React.FC = () => {
           </>
         ) : (
           <div style={{ display: "inline-block" }}>
-            <div>
-              <div>
-                <Button
-                  label={t("New")}
-                  style={{ marginTop: "10px", width: "100%" }}
-                  icon="pi pi-plus"
-                  className="p-button-success p-mr-2"
-                  onClick={openNew}
-                />
-              </div>
-              <div>
-                <FileUpload
-                  mode="basic"
-                  maxFileSize={1000000}
-                  style={{ marginTop: "10px", width: "100%" }}
-                  chooseLabel={t("ImportCSV")}
-                  className="p-button-success p-mr-2"
-                  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                  onUpload={importExcel}
-                />
-              </div>
-            </div>
+            <div></div>
             <div>
               <Button
                 label={t("Export")}
@@ -226,30 +112,6 @@ const MainTable: React.FC = () => {
                 className="p-button-help"
                 onClick={exportCSV}
               />
-            </div>
-            <div>
-              <Button
-                label={t("Order")}
-                style={{ marginTop: "10px", width: "100%" }}
-                icon="pi pi-plus"
-                className="p-button-success p-mr-2"
-                onClick={() =>
-                  toggle === false ? setToggle(true) : setToggle(false)
-                }
-              />
-            </div>
-            <div>
-              {authStore.user?.isAdmin ? (
-                <Button
-                  label={t("Deleted")}
-                  style={{ marginTop: "10px", width: "100%" }}
-                  icon="pi pi-plus"
-                  className="p-button-success p-mr-2"
-                  onClick={() => setReturnDialog(true)}
-                />
-              ) : (
-                <></>
-              )}
             </div>
           </div>
         )}
@@ -288,70 +150,24 @@ const MainTable: React.FC = () => {
     return date.getFullYear() + "-" + month + "-" + day;
   };
 
-  const renderTypeFilter = () => {
-    return (
-      <MultiSelect
-        className="p-column-filter"
-        value={AllTypesFilter}
-        options={AllTypes}
-        onChange={(e: any) => {
-          dt.current.filter(e.value, "InspectionType", "in");
-          setAllTypesFilter(e.value);
-        }}
-        placeholder="AllTypes"
-        optionLabel="name"
-        optionValue="name"
-      />
-    );
-  };
-
-  const renderResultFilte = () => {
-    return (
-      <MultiSelect
-        className="p-column-filter"
-        options={AllResults}
-        value={allResultsFilter}
-        onChange={(e: any) => {
-          dt.current.filter(e.value, "InspectionResult", "in");
-          setAllResultsFilter(e.value);
-        }}
-        placeholder="AllResults"
-        optionLabel="name"
-        optionValue="name"
-      />
-    );
-  };
-
-  const deleteProduct = async () => {
-    const id = product?.id;
-    await inspectionStore.deleteInspection(id);
-    fetch();
-    setDeleteProductDialog(false);
-    toast.current.show({
-      severity: "success",
-      summary: "Successful",
-      detail: t("InspectionDelete"),
-      life: 3000,
-    });
-  };
-
   const actionBodyTemplate = (rowData: any) => {
     return (
       <>
         <div>
           <Button
             style={{ marginLeft: "4px" }}
-            icon="pi pi-pencil"
             className="p-button-rounded p-button-success p-mr-2"
-            onClick={() => editProduct(rowData)}
-          />
+          >
+            VFT
+          </Button>
         </div>
         <div>
           <Button
-            icon="pi pi-trash"
-            className="p-button-rounded p-button-warning"
-            onClick={() => confirmDeleteProduct(rowData)}
-          />
+            style={{ marginLeft: "4px" }}
+            className="p-button-rounded p-button-success p-mr-2"
+          >
+            VNT
+          </Button>
         </div>
       </>
     );
@@ -372,40 +188,7 @@ const MainTable: React.FC = () => {
     );
   };
 
-  const renderDateFilter2 = () => {
-    return (
-      <Calendar
-        value={datefilter2}
-        onChange={(e: any) => {
-          dt.current.filter(e.value, "date2", "custom");
-          setDateFilter2(e.value);
-        }}
-        placeholder="Date"
-        dateFormat="mm/dd/yy"
-        className="p-column-filter"
-      />
-    );
-  };
-  const deleteProductDialogFooter = (
-    <React.Fragment>
-      <Button
-        label="No"
-        icon="pi pi-times"
-        className="p-button-text"
-        onClick={hideDeleteProductDialog}
-      />
-      <Button
-        label="Yes"
-        icon="pi pi-check"
-        className="p-button-text"
-        onClick={deleteProduct}
-      />
-    </React.Fragment>
-  );
-  const ResultFilterElement = renderResultFilte();
-  const TypeFilterElement = renderTypeFilter();
   const DateFilter = renderDateFilter();
-  const DateFilter2 = renderDateFilter2();
 
   return (
     <div className="inspections-table">
@@ -443,20 +226,36 @@ const MainTable: React.FC = () => {
           rowsPerPageOptions={[10, 25, 50]}
         >
           <Column
-            selectionMode="multiple"
-            headerStyle={{ width: "4em" }}
+            body={(rowData) => (
+              <div>
+                <span className="p-column-title">{t("#")}</span>
+                {rowData.InspectionFileNumber}
+              </div>
+            )}
+            field="InspectionFileNumber"
+            header={t("#")}
+          ></Column>
+          <Column
+            body={(rowData) => (
+              <div>
+                <span className="p-column-title">{t("Name")}</span>
+                {rowData.InspectionType}
+              </div>
+            )}
+            field="InspectionType"
+            header={t("Name")}
           ></Column>
           <Column
             headerStyle={{ width: "10em" }}
             body={(rowData) => (
               <div>
-                <span className="p-column-title">{t("CivilID")}</span>
+                <span className="p-column-title">{t("Gender")}</span>
                 {rowData.civilId}
               </div>
             )}
             field="civilId"
             className="p-column-title"
-            header={t("CivilID")}
+            header={t("Gender")}
             filter={toggle === true ? true : false}
             filterPlaceholder={t("Search")}
           ></Column>
@@ -464,76 +263,38 @@ const MainTable: React.FC = () => {
             headerStyle={{ width: "10em" }}
             body={(rowData) => (
               <div>
-                <span className="p-column-title">{t("Establishment")}</span>
+                <span className="p-column-title">{t("YOB")}</span>
                 {rowData.Establishment}
               </div>
             )}
             field="Establishment"
-            header={t("Establishment")}
+            header={t("YOB")}
           ></Column>
           <Column
             body={(rowData) => (
               <div>
-                <span className="p-column-title">
-                  {t("InspectionFileNumber")}
-                </span>
-                {rowData.InspectionFileNumber}
-              </div>
-            )}
-            field="InspectionFileNumber"
-            header={t("InspectionFileNumber")}
-          ></Column>
-          <Column
-            body={(rowData) => (
-              <div>
-                <span className="p-column-title">{t("InspectionResult")}</span>
+                <span className="p-column-title">{t("RegDate")}</span>
                 {rowData.InspectionResult}
               </div>
             )}
             field="InspectionResult"
-            header={t("InspectionResult")}
-            filter={toggle === true ? true : false}
-            filterElement={ResultFilterElement}
-            filterMatchMode="custom"
+            header={t("RegDate")}
           ></Column>
           <Column
             field="date1"
-            filter={toggle === true ? true : false}
-            filterMatchMode="custom"
-            filterFunction={filterDate}
-            filterElement={DateFilter}
             body={(rowData) => (
               <div>
-                <span className="p-column-title">{t("CaseDate")}</span>
-                {new Date(rowData.date1).toLocaleDateString("en-US", {
-                  month: "2-digit",
-                  day: "2-digit",
-                  year: "numeric",
-                })}
-              </div>
-            )}
-            header={t("CaseDate")}
-          ></Column>
-          <Column
-            body={(rowData) => (
-              <div>
-                <span className="p-column-title">{t("InspectionType")}</span>
+                <span className="p-column-title">{t("HaType")}</span>
                 {rowData.InspectionType}
               </div>
             )}
-            filter={toggle === true ? true : false}
-            filterElement={TypeFilterElement}
-            field="InspectionType"
-            header={t("InspectionType")}
+            header={t("HaType")}
           ></Column>
           <Column
             filter={toggle === true ? true : false}
-            filterMatchMode="custom"
-            filterFunction={filterDate}
-            filterElement={DateFilter2}
             body={(rowData) => (
               <div>
-                <span className="p-column-title">{t("InspectionDate")}</span>
+                <span className="p-column-title">{t("VpSide")}</span>
                 {new Date(rowData.date2).toLocaleDateString("en-US", {
                   month: "2-digit",
                   day: "2-digit",
@@ -542,18 +303,16 @@ const MainTable: React.FC = () => {
               </div>
             )}
             field="date2"
-            header={t("InspectionDate")}
+            header={t("VpSide")}
           ></Column>
           <Column
             field="NotificationNumber"
             filter={toggle === true ? true : false}
             filterPlaceholder={t("Search")}
-            header={t("NotificationNumber")}
+            header={t("VpStart")}
             body={(rowData) => (
               <div>
-                <span className="p-column-title">
-                  {t("NotificationNumber")}
-                </span>
+                <span className="p-column-title">{t("VpStart")}</span>
                 {rowData.NotificationNumber}
               </div>
             )}
@@ -561,32 +320,42 @@ const MainTable: React.FC = () => {
           <Column
             body={(rowData) => (
               <div>
-                <span className="p-column-title">{t("SaveFile")}</span>
+                <span className="p-column-title">{t("VpCause")}</span>
                 {rowData.SaveFile}
               </div>
             )}
             field="SaveFile"
-            header={t("SaveFile")}
+            header={t("VpCause")}
           ></Column>
           <Column
             body={(rowData) => (
               <div>
-                <span className="p-column-title">{t("Transferred")}</span>
+                <span className="p-column-title">{t("Iteration")}</span>
                 {rowData.TransferredInspection === null ? "NO" : "YES"}
               </div>
             )}
             field="SaveFile"
-            header={t("Transferred")}
+            header={t("Iteration")}
           ></Column>
           <Column
             body={(rowData) => (
               <div>
-                <span className="p-column-title">{t("LocationSave")}</span>
+                <span className="p-column-title">{t("Status")}</span>
                 {rowData.Location}
               </div>
             )}
             field="Location"
-            header={t("LocationSave")}
+            header={t("Status")}
+          ></Column>
+          <Column
+            body={(rowData) => (
+              <div>
+                <span className="p-column-title">{t("TherapySpentTime")}</span>
+                {rowData.Location}
+              </div>
+            )}
+            field="Location"
+            header={t("TherapySpentTime")}
           ></Column>
           <Column
             body={actionBodyTemplate}
@@ -624,58 +393,6 @@ const MainTable: React.FC = () => {
             update={product}
             fetch={fetch}
           />
-        </Dialog>
-
-        <Dialog
-          visible={transferDialog}
-          style={{ width: "450px" }}
-          header={t("TransferInspection")}
-          modal
-          className="p-fluid"
-          onHide={hideTransferDialog}
-        >
-          <TransferForm
-            saveTransfer={saveTransfer}
-            hideTransferDialog={hideTransferDialog}
-            selectedProducts={selectedProducts}
-          />
-        </Dialog>
-        <Dialog
-          visible={returnDialog}
-          style={{ width: "98vw" }}
-          modal
-          className="p-fluid"
-          draggable={false}
-          onHide={hideReturnDialog}
-        >
-          <DeletedInspections fetch={fetch} />
-        </Dialog>
-        <Dialog
-          visible={deleteProductDialog}
-          style={{ width: "450px" }}
-          header={t("Confirm")}
-          modal
-          footer={deleteProductDialogFooter}
-          onHide={hideDeleteProductDialog}
-        >
-          <div className="confirmation-content">
-            <i
-              className="pi pi-exclamation-triangle p-mr-3"
-              style={{ fontSize: "2rem" }}
-            />
-
-            {cookies.get("i18next") === "ar"
-              ? product && (
-                  <span>
-                    ؟<b>{product.civilId}</b> هل انت متاكد من حذف
-                  </span>
-                )
-              : product && (
-                  <span>
-                    Are you sure you want to delete <b>{product.civilId}</b>?
-                  </span>
-                )}
-          </div>
         </Dialog>
       </div>
     </div>

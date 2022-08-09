@@ -18,7 +18,6 @@ const Navbar: React.FC = () => {
 
   const Logout = async () => {
     AuthStore.SignOut();
-    window.location.reload();
   };
   const items = [
     {
@@ -41,7 +40,6 @@ const Navbar: React.FC = () => {
       <div className="Navbar" style={{ direction: "ltr" }}>
         <div className="card">
           <Menubar model={items} start={start} end={end} />
-          <h1 className="title">{t("HeaderTitle")}</h1>
         </div>
       </div>
 

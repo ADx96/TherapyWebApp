@@ -10,9 +10,8 @@ import {
   tabTextVariant,
   tabContentVariant,
 } from "./TabsAnimationSetting";
-import UserTable from "../UsersPageComponent/UsersTable";
-import Locations from "../LocationsPageComponent/Locations";
 import authStore from "../../Mobx/AuthStore";
+import TherapyDetailsPage from "../../Pages/TherapyDetailsPage";
 
 const MainPageTabs: React.FC = () => {
   const { t } = useTranslation();
@@ -28,20 +27,12 @@ const MainPageTabs: React.FC = () => {
       content: MainTable,
     },
     {
-      title: "Users",
-      id: "Users",
-      icon: <FaUsers />,
-      color: "#0E89EC",
-      content: UserTable,
-      disabled: authStore.user?.isAdmin === false ? true : false,
-    },
-    {
-      title: "LocationSave",
+      title: "User therapy Details",
       id: "Locations",
       icon: <FaMap />,
       color: "#0E89EC",
-      content: Locations,
-      disabled: authStore.user?.isAdmin === false ? true : false,
+      hidden: true,
+      content: TherapyDetailsPage,
     },
   ];
 
@@ -68,9 +59,10 @@ const MainPageTabs: React.FC = () => {
 
   return (
     <div className="container">
+      <h1 className="title">{t("HeaderTitle")}</h1>
       <div className="tabs-component">
         <ul className="tab-links" role="tablist" style={{ direction: "ltr" }}>
-          {Tabs.filter((item) => item.disabled !== true).map((Tab, index) => (
+          {Tabs.filter((item) => item.hidden !== true).map((Tab, index) => (
             <motion.li
               key={Tab.id}
               className={cn("tab", { active: activeTabIndex === index })}
