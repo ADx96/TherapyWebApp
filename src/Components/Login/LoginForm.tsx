@@ -40,12 +40,6 @@ const LoginForm: React.FC = () => {
       <div className={`login_form ${open ? "" : "is_closed"}`}>
         <div className="left_side">
           <div className="content">
-            <h1>Hello World.</h1>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Repudiandae iure recusandae debitis!
-            </p>
-
             {open ? (
               <></>
             ) : (
@@ -60,8 +54,8 @@ const LoginForm: React.FC = () => {
         <div className="right_side">
           <i className="pi pi-times close" onClick={() => setOpen(false)}></i>
           <div className="heading">
-            <h3>Login</h3>
-            <p>test</p>
+            <h3>Arabic Read-Right Dashboard</h3>
+            <p>Login</p>
           </div>
 
           <form onSubmit={handleSubmit}>

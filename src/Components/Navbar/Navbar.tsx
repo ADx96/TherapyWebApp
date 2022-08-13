@@ -3,10 +3,8 @@ import { Menubar } from "primereact/menubar";
 import "./Navbar.scss";
 import { useTranslation } from "react-i18next";
 import UserDialog from "./UserDialog";
-import LanguageButton from "../LanguageSwitchButton/LanguageButton";
-import Logo from "../../Images/ManPowerLogo.jpeg";
+import Logo from "../../Images/header.png";
 import AuthStore from "../../Mobx/AuthStore";
-import NavButton from "./NavButton";
 
 const Navbar: React.FC = () => {
   const [displayPosition, setDisplayPosition] = useState(false);
@@ -14,11 +12,11 @@ const Navbar: React.FC = () => {
   const start = (
     <img alt="logo" src={Logo} height="60" className="p-mr-2"></img>
   );
-  const end = <LanguageButton />;
 
   const Logout = async () => {
     AuthStore.SignOut();
   };
+
   const items = [
     {
       label: t("SignOut"),
@@ -27,19 +25,13 @@ const Navbar: React.FC = () => {
         Logout();
       },
     },
-    {
-      icon: "pi pi-fw pi-power-off",
-      template: () => {
-        return <NavButton setDisplayPosition={setDisplayPosition} />;
-      },
-    },
   ];
 
   return (
     <>
       <div className="Navbar" style={{ direction: "ltr" }}>
         <div className="card">
-          <Menubar model={items} start={start} end={end} />
+          <Menubar model={items} start={start} />
         </div>
       </div>
 
