@@ -25,7 +25,7 @@ const LoginForm: React.FC = () => {
   const handleSubmit = async (e: any) => {
     data.username = data.username.toLowerCase();
     e.target.reset();
-    navigate("/MainPage");
+    navigate(`/MainPage#Users`);
     e.preventDefault();
     // await authStore.SignIn(data);
     // if (authStore.user) {
@@ -44,7 +44,7 @@ const LoginForm: React.FC = () => {
               <></>
             ) : (
               <div className="login">
-                <Button onClick={() => setOpen(true)}>
+                <Button className="login-btn" onClick={() => setOpen(true)}>
                   Click Here to login
                 </Button>
               </div>
@@ -54,8 +54,8 @@ const LoginForm: React.FC = () => {
         <div className="right_side">
           <i className="pi pi-times close" onClick={() => setOpen(false)}></i>
           <div className="heading">
-            <h3>Arabic Read-Right Dashboard</h3>
-            <p>Login</p>
+            <h2>Arabic Read-Right Dashboard</h2>
+            <h3>Login</h3>
           </div>
 
           <form onSubmit={handleSubmit}>
@@ -66,6 +66,7 @@ const LoginForm: React.FC = () => {
                 <InputText
                   className="text-base w-full"
                   id="email"
+                  required
                   name="email"
                 />
               </span>
@@ -74,6 +75,7 @@ const LoginForm: React.FC = () => {
               <label htmlFor="password">Password*</label>
               <Password
                 id="password"
+                required
                 name="password"
                 className="w-full password-input "
                 toggleMask
@@ -83,6 +85,7 @@ const LoginForm: React.FC = () => {
               <div className="cbox"></div>
             </div>
             <Button
+              className="login-btn"
               style={{ textAlign: "center", display: "block" }}
               type="submit"
             >

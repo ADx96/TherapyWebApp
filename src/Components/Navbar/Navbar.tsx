@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Menubar } from "primereact/menubar";
+import { Button } from "primereact/button";
 import "./Navbar.scss";
 import { useTranslation } from "react-i18next";
 import UserDialog from "./UserDialog";
-import Logo from "../../Images/header.png";
+import Logo from "../../Images/Logo.png";
 import AuthStore from "../../Mobx/AuthStore";
 
 const Navbar: React.FC = () => {
@@ -17,21 +18,19 @@ const Navbar: React.FC = () => {
     AuthStore.SignOut();
   };
 
-  const items = [
-    {
-      label: t("SignOut"),
-      icon: "pi pi-fw pi-power-off",
-      command: () => {
-        Logout();
-      },
-    },
-  ];
-
+  const end = (
+    <Button
+      onClick={Logout}
+      label="Sign Out"
+      icon="pi pi-power-off"
+      className="p-button-text mr-2 mb-2"
+    ></Button>
+  );
   return (
     <>
       <div className="Navbar" style={{ direction: "ltr" }}>
         <div className="card">
-          <Menubar model={items} start={start} />
+          <Menubar start={start} end={end} />
         </div>
       </div>
 

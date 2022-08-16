@@ -2,27 +2,22 @@ import React, { useState, useEffect, useRef } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
-import AddForm from "./AddForm";
 import { useMediaQuery } from "react-responsive";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { observer } from "mobx-react";
 import { Calendar } from "primereact/calendar";
 import { useTranslation } from "react-i18next";
-import inspectionStore from "../../Mobx/InspectionStore";
 import { Toolbar } from "primereact/toolbar";
-import { Dialog } from "primereact/dialog";
 import "./MainTable.scss";
-import UpdateForm from "./UpdateForm";
 
 const MainTable: React.FC = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 895px)" });
   const { t } = useTranslation();
-  const [inspections, setInspections] = useState<any>([]);
+  const [data, setData] = useState<any>([]);
   const [productDialog, setProductDialog] = useState(false);
   const [toggle, setToggle] = useState(false);
   const [UpdateDialog, setUpdateDialog] = useState(false);
-  const [product, setProduct] = useState<any>();
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [globalFilter, setGlobalFilter] = useState<any>(null);
   const [datefilter1, setDateFilter1] = useState<any>(null);
@@ -30,21 +25,21 @@ const MainTable: React.FC = () => {
   const toast = useRef<any>(null);
   const dt = useRef<any>(null);
 
-  useEffect(() => {
-    async function fetchData() {
-      await inspectionStore.getInspections();
-      const data: any = inspectionStore.Inspections;
-      setInspections(data);
-    }
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     await inspectionStore.getInspections();
+  //     const data: any = inspectionStore.Inspections;
+  //     setInspections(data);
+  //   }
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
-  const fetch = async () => {
-    await inspectionStore.getInspections();
-    const data: any = inspectionStore.Inspections;
-    setInspections(data);
-  };
+  // const fetch = async () => {
+  //   await inspectionStore.getInspections();
+  //   const data: any = inspectionStore.Inspections;
+  //   setInspections(data);
+  // };
 
   const header = (
     <div className="table-header">
@@ -59,31 +54,6 @@ const MainTable: React.FC = () => {
       </span>
     </div>
   );
-
-  const save = () => {
-    toast.current.show({
-      severity: "success",
-      summary: "Successful",
-      detail: t("InspectionAdded"),
-      life: 3000,
-    });
-  };
-  const saveUpdateProduct = () => {
-    toast.current.show({
-      severity: "success",
-      summary: "Successful",
-      detail: t("InspectionSaved"),
-      life: 3000,
-    });
-  };
-
-  const hideDialog = () => {
-    setProductDialog(false);
-  };
-
-  const hideUpdateDialog = () => {
-    setUpdateDialog(false);
-  };
 
   const exportCSV = () => {
     dt.current.exportCSV();
@@ -210,7 +180,7 @@ const MainTable: React.FC = () => {
         )}
         <DataTable
           ref={dt}
-          value={inspections}
+          value={data}
           selection={selectedProducts}
           onSelectionChange={(e) => setSelectedProducts(e.value)}
           dataKey="id"
@@ -368,32 +338,6 @@ const MainTable: React.FC = () => {
             }}
           ></Column>
         </DataTable>
-
-        <Dialog
-          visible={productDialog}
-          style={{ width: "450px" }}
-          header={t("CreateInspection")}
-          modal
-          className="p-fluid"
-          onHide={hideDialog}
-        >
-          <AddForm save={save} fetch={fetch} hideDialog={hideDialog} />
-        </Dialog>
-        <Dialog
-          visible={UpdateDialog}
-          style={{ width: "450px" }}
-          header={t("UpdateInspection")}
-          modal
-          className="p-fluid"
-          onHide={hideUpdateDialog}
-        >
-          <UpdateForm
-            saveUpdateProduct={saveUpdateProduct}
-            hideUpdateDialog={hideUpdateDialog}
-            update={product}
-            fetch={fetch}
-          />
-        </Dialog>
       </div>
     </div>
   );

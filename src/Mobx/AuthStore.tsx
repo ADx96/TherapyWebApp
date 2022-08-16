@@ -32,12 +32,6 @@ class AuthStore {
     instance.defaults.headers.common.Authorization = `Bearer ${token}`;
   };
 
-  KeepUser = (token: string, refreshToken: any) => {
-    this.setTokens(token, refreshToken);
-    this.user = decode(token);
-    instance.defaults.headers.common.Authorization = `Bearer ${token}`;
-  };
-
   // User tokens
   setTokens = (token: string, refreshToken: string) => {
     localStorage.setItem("myToken", token);
@@ -46,20 +40,6 @@ class AuthStore {
 
   getToken = () => {
     localStorage.getItem("myToken");
-  };
-
-  getRefreshToken = () => {
-    localStorage.getItem("myRefreshToken");
-  };
-
-  refreshToken = async () => {
-    try {
-      const refresh = this.getRefreshToken();
-      const response: any = await instance.post("/refresh", refresh);
-      this.setTokens(response.data.token, response.data.refreshToken);
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   Register = async (Data: { [x: string]: string | Blob }) => {
@@ -93,29 +73,13 @@ class AuthStore {
 
   checkForToken = () => {
     const token = localStorage.getItem("myToken");
-    const refreshToken = localStorage.getItem("myRefreshToken");
     if (token) {
       const currentTime = Date.now();
       const decodedToken: IDecodedToken = decode(token);
       if (decodedToken.exp < currentTime) {
-        this.checkForRefreshToken();
-      } else {
-        this.KeepUser(token, refreshToken);
+        this.SignOut();
       }
     }
-  };
-
-  checkForRefreshToken = () => {
-    const refreshToken = localStorage.getItem("myRefreshToken");
-    if (refreshToken) {
-      const currentTime = Date.now();
-      const decodedRefreshToken: IDecodedRefreshToken = decode(refreshToken);
-      if (decodedRefreshToken.exp > currentTime) {
-        this.refreshToken();
-        return;
-      }
-    }
-    this.SignOut();
   };
 }
 
