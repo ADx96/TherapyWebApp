@@ -11,7 +11,7 @@ const LoginForm: React.FC = () => {
   const [open, setOpen] = useState(false);
 
   const [data, setData] = useState({
-    username: "",
+    email: "",
     password: "",
   });
 
@@ -23,16 +23,15 @@ const LoginForm: React.FC = () => {
   };
 
   const handleSubmit = async (e: any) => {
-    data.username = data.username.toLowerCase();
+    data.email = data.email.toLowerCase();
     e.target.reset();
-    navigate(`/MainPage#Users`);
     e.preventDefault();
-    // await authStore.SignIn(data);
-    // if (authStore.user) {
-    //   navigate("/MainPage");
-    // } else {
-    //   alert("Login Failed");
-    // }
+    await authStore.SignIn(data);
+    if (authStore.user) {
+      navigate(`/MainPage#Users`);
+    } else {
+      alert("Login Failed");
+    }
   };
 
   return (
@@ -66,6 +65,7 @@ const LoginForm: React.FC = () => {
                 <InputText
                   className="text-base w-full"
                   id="email"
+                  onChange={handleChange}
                   required
                   name="email"
                 />
@@ -77,13 +77,13 @@ const LoginForm: React.FC = () => {
                 id="password"
                 required
                 name="password"
+                feedback={false}
+                onChange={handleChange}
                 className="w-full password-input "
                 toggleMask
               />
             </div>
-            <div className="password">
-              <div className="cbox"></div>
-            </div>
+            <div className="password"></div>
             <Button
               className="login-btn"
               style={{ textAlign: "center", display: "block" }}
