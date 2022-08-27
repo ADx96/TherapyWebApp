@@ -36,11 +36,9 @@ const UserDialog: React.FC<Props> = ({
               shape="circle"
             />
           </div>
-          <div className="profile-name">{authStore.user?.fullName}</div>
+          <div className="profile-name"></div>
           <p className="about">
-            {authStore.user?.username}
             <br />
-            {authStore.user?.isAdmin ? "Admin" : "User"}
           </p>
         </div>
       </div>

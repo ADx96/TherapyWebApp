@@ -3,6 +3,8 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
 import { useMediaQuery } from "react-responsive";
+import { useNavigate } from "react-router-dom";
+
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { observer } from "mobx-react";
@@ -10,11 +12,13 @@ import { Calendar } from "primereact/calendar";
 import { useTranslation } from "react-i18next";
 import { Toolbar } from "primereact/toolbar";
 import "./MainTable.scss";
+import usersStore from "../../Mobx/UsersStore";
 
 const MainTable: React.FC = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 895px)" });
   const { t } = useTranslation();
   const [data, setData] = useState<any>([]);
+  const navigate = useNavigate();
   const [productDialog, setProductDialog] = useState(false);
   const [toggle, setToggle] = useState(false);
   const [UpdateDialog, setUpdateDialog] = useState(false);
@@ -25,15 +29,19 @@ const MainTable: React.FC = () => {
   const toast = useRef<any>(null);
   const dt = useRef<any>(null);
 
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     await inspectionStore.getInspections();
-  //     const data: any = inspectionStore.Inspections;
-  //     setInspections(data);
-  //   }
+  useEffect(() => {
+    async function fetchData() {
+      await usersStore.getUsers();
+      const data: any = usersStore.Users;
+      setData(data);
+    }
 
-  //   fetchData();
-  // }, []);
+    fetchData();
+  }, []);
+
+  const HandleNavigation = (text: string, id: number) => {
+    navigate(`${text}/${id}`);
+  };
 
   // const fetch = async () => {
   //   await inspectionStore.getInspections();
@@ -125,6 +133,15 @@ const MainTable: React.FC = () => {
       <>
         <div>
           <Button
+            onClick={() => HandleNavigation("/Users/UserDetails", rowData.id)}
+            style={{ marginLeft: "4px" }}
+            className="p-button-rounded p-button-success p-mr-2"
+          >
+            Therapy
+          </Button>
+        </div>
+        <div>
+          <Button
             style={{ marginLeft: "4px" }}
             className="p-button-rounded p-button-success p-mr-2"
           >
@@ -199,7 +216,7 @@ const MainTable: React.FC = () => {
             body={(rowData) => (
               <div>
                 <span className="p-column-title">{t("#")}</span>
-                {rowData.InspectionFileNumber}
+                {rowData.examinationId}
               </div>
             )}
             field="InspectionFileNumber"
@@ -209,7 +226,7 @@ const MainTable: React.FC = () => {
             body={(rowData) => (
               <div>
                 <span className="p-column-title">{t("Name")}</span>
-                {rowData.InspectionType}
+                {rowData.name}
               </div>
             )}
             field="InspectionType"
@@ -220,7 +237,7 @@ const MainTable: React.FC = () => {
             body={(rowData) => (
               <div>
                 <span className="p-column-title">{t("Gender")}</span>
-                {rowData.civilId}
+                {rowData.gender}
               </div>
             )}
             field="civilId"
@@ -234,7 +251,7 @@ const MainTable: React.FC = () => {
             body={(rowData) => (
               <div>
                 <span className="p-column-title">{t("YOB")}</span>
-                {rowData.Establishment}
+                {rowData.yob}
               </div>
             )}
             field="Establishment"
@@ -244,7 +261,7 @@ const MainTable: React.FC = () => {
             body={(rowData) => (
               <div>
                 <span className="p-column-title">{t("RegDate")}</span>
-                {rowData.InspectionResult}
+                {rowData.created_at}
               </div>
             )}
             field="InspectionResult"
@@ -255,7 +272,7 @@ const MainTable: React.FC = () => {
             body={(rowData) => (
               <div>
                 <span className="p-column-title">{t("HaType")}</span>
-                {rowData.InspectionType}
+                {rowData.ha_type}
               </div>
             )}
             header={t("HaType")}
@@ -265,25 +282,23 @@ const MainTable: React.FC = () => {
             body={(rowData) => (
               <div>
                 <span className="p-column-title">{t("VpSide")}</span>
-                {new Date(rowData.date2).toLocaleDateString("en-US", {
-                  month: "2-digit",
-                  day: "2-digit",
-                  year: "numeric",
-                })}
+                <div>
+                  <span className="p-column-title">{t("VpStart")}</span>
+                  {rowData.vp_side}
+                </div>
               </div>
             )}
             field="date2"
             header={t("VpSide")}
           ></Column>
           <Column
-            field="NotificationNumber"
             filter={toggle === true ? true : false}
             filterPlaceholder={t("Search")}
             header={t("VpStart")}
             body={(rowData) => (
               <div>
                 <span className="p-column-title">{t("VpStart")}</span>
-                {rowData.NotificationNumber}
+                {rowData.vp_start_date}
               </div>
             )}
           ></Column>
@@ -291,7 +306,7 @@ const MainTable: React.FC = () => {
             body={(rowData) => (
               <div>
                 <span className="p-column-title">{t("VpCause")}</span>
-                {rowData.SaveFile}
+                {rowData.vp_extra_cause}
               </div>
             )}
             field="SaveFile"
@@ -310,16 +325,6 @@ const MainTable: React.FC = () => {
           <Column
             body={(rowData) => (
               <div>
-                <span className="p-column-title">{t("Status")}</span>
-                {rowData.Location}
-              </div>
-            )}
-            field="Location"
-            header={t("Status")}
-          ></Column>
-          <Column
-            body={(rowData) => (
-              <div>
                 <span className="p-column-title">{t("TherapySpentTime")}</span>
                 {rowData.Location}
               </div>
@@ -328,8 +333,20 @@ const MainTable: React.FC = () => {
             header={t("TherapySpentTime")}
           ></Column>
           <Column
+            body={(rowData) => (
+              <div>
+                <span className="p-column-title">{t("Status")}</span>
+                {rowData.status}
+              </div>
+            )}
+            field="Location"
+            header={t("Status")}
+          ></Column>
+
+          <Column
+            header="Action"
             body={actionBodyTemplate}
-            headerStyle={{ width: "8em", textAlign: "center" }}
+            headerStyle={{ width: "50px", textAlign: "center" }}
             bodyStyle={{
               textAlign: "center",
               overflow: "visible",

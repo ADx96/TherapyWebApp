@@ -7,6 +7,9 @@ export interface Users {
 
 class UsersStore {
   Users: any[] = [];
+  UsersTherapy: any[] = [];
+  UserData: any[] = [];
+  UserVFT: any[] = [];
   isLoading = true;
   constructor() {
     makeAutoObservable(this);
@@ -14,7 +17,7 @@ class UsersStore {
 
   getUsers = async () => {
     try {
-      const response: any = await instance.get(`/users`);
+      const response: any = await instance.get(`/dashboard/auth/admin/users`);
       runInAction(() => {
         this.Users = response.data;
         this.isLoading = false;
@@ -24,46 +27,28 @@ class UsersStore {
     }
   };
 
-  getDeletedUsers = async () => {
+  getUserTherapy = async (id: string) => {
     try {
-      const response: any = await instance.get(`/users/deleted`);
+      const response: any = await instance.get(
+        `/dashboard/auth/admin/users/${id}`
+      );
       runInAction(() => {
-        this.Users = response.data;
+        this.UserData = response.data.user;
+        this.UsersTherapy = response.data.therapy;
         this.isLoading = false;
       });
     } catch (error) {
       console.error(error);
     }
   };
-
-  UpdateUsers = async (id: any, data: any) => {
+  getUserVFT = async (id: string) => {
     try {
-      const response: any = await instance.put(`/user/${id}`, data);
+      const response: any = await instance.get(
+        `/dashboard/auth/admin/users/${id}/vf-test`
+      );
       runInAction(() => {
-        this.Users = response.data;
+        this.UserVFT = response.data;
         this.isLoading = false;
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  deleteUser = async (id: any) => {
-    try {
-      const response: any = await instance.put(`/user/delete/${id}`);
-      runInAction(() => {
-        this.Users = response.data;
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  returnUser = async (id: any) => {
-    try {
-      const response: any = await instance.put(`/user/return/${id}`);
-      runInAction(() => {
-        this.Users = response.data;
       });
     } catch (error) {
       console.error(error);

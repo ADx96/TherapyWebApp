@@ -1,21 +1,15 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable } from "mobx";
 import instance from "./Instance";
 import decode from "jwt-decode";
+import { unchangedTextChangeRange } from "typescript";
 
 interface ITokenResponse {
   token: string;
-  refreshToken: string;
 }
 
-interface IDecodedRefreshToken {
-  id: number;
+interface IDecodedToken {
   exp: number;
-}
-
-interface IDecodedToken extends IDecodedRefreshToken {
-  username: string;
-  isAdmin: boolean;
-  fullName: string;
+  role: string;
 }
 
 class AuthStore {
@@ -26,33 +20,24 @@ class AuthStore {
     makeAutoObservable(this);
   }
 
-  setUser = ({ token, refreshToken }: ITokenResponse) => {
-    this.setTokens(token, refreshToken);
+  setUser = ({ token }: ITokenResponse) => {
+    this.setTokens(token);
     this.user = decode(token);
     instance.defaults.headers.common.Authorization = `Bearer ${token}`;
   };
 
+  KeepUser = () => {
+    const token = localStorage.getItem("myToken");
+    instance.defaults.headers.common.Authorization = `Bearer ${token}`;
+  };
+
   // User tokens
-  setTokens = (token: string, refreshToken: string) => {
+  setTokens = (token: string) => {
     localStorage.setItem("myToken", token);
-    localStorage.setItem("myRefreshToken", refreshToken);
   };
 
   getToken = () => {
     localStorage.getItem("myToken");
-  };
-
-  Register = async (Data: { [x: string]: string | Blob }) => {
-    try {
-      const response: any = await instance.post("/register", Data);
-      runInAction(() => {
-        this.userData.shift();
-        this.userData.push(response.data);
-        this.isLoading = false;
-      });
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   SignIn = async (userData: any) => {
@@ -73,12 +58,12 @@ class AuthStore {
 
   checkForToken = () => {
     const token = localStorage.getItem("myToken");
+
     if (token) {
-      const currentTime = Date.now();
       const decodedToken: IDecodedToken = decode(token);
-      if (decodedToken.exp < currentTime) {
+      if (decodedToken.exp < Date.now() / 1000) {
         this.SignOut();
-      }
+      } else this.KeepUser();
     }
   };
 }

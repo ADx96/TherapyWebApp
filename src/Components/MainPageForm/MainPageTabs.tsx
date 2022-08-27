@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import cn from "classnames";
 import { motion } from "framer-motion";
 import "./Tabs.scss";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { FaTable, FaUsers, FaMap } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import MainTable from "./MainTable";
@@ -11,12 +11,10 @@ import {
   tabTextVariant,
   tabContentVariant,
 } from "./TabsAnimationSetting";
-import authStore from "../../Mobx/AuthStore";
 import TherapyDetailsPage from "../../Pages/TherapyDetailsPage";
 
 const MainPageTabs: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { t } = useTranslation();
   const defaultIndex = 0;
   const [activeTabIndex, setActiveTabIndex] = useState(defaultIndex);
@@ -28,14 +26,6 @@ const MainPageTabs: React.FC = () => {
       icon: <FaTable />,
       color: "#0b477f",
       content: MainTable,
-    },
-    {
-      title: "User therapy Details",
-      id: "UserDetails",
-      icon: <FaMap />,
-      color: "#0E89EC",
-      hidden: true,
-      content: TherapyDetailsPage,
     },
   ];
 
@@ -66,7 +56,7 @@ const MainPageTabs: React.FC = () => {
       <h1 className="title">Therapy Dashboard</h1>
       <div className="tabs-component">
         <ul className="tab-links" role="tablist" style={{ direction: "ltr" }}>
-          {Tabs.filter((item) => item.hidden !== true).map((Tab, index) => (
+          {Tabs.map((Tab, index) => (
             <motion.li
               key={Tab.id}
               className={cn("tab", { active: activeTabIndex === index })}
@@ -88,12 +78,12 @@ const MainPageTabs: React.FC = () => {
                   <span className="line bLine"></span>
                 </div>
               ) : (
-                <a href={`#${Tab.id}`} onClick={() => onTabClick(index)}>
+                <Link to={`#${Tab.id}`} onClick={() => onTabClick(index)}>
                   {Tab.icon}
                   <motion.span variants={tabTextVariant}>
                     {t(Tab.title)}
                   </motion.span>
-                </a>
+                </Link>
               )}
             </motion.li>
           ))}

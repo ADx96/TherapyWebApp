@@ -9,7 +9,7 @@ import { Button } from "primereact/button";
 
 const LoginForm: React.FC = () => {
   const [open, setOpen] = useState(false);
-
+  const [message, setMessage] = useState(false);
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -26,14 +26,24 @@ const LoginForm: React.FC = () => {
     data.email = data.email.toLowerCase();
     e.target.reset();
     e.preventDefault();
-    await authStore.SignIn(data);
-    if (authStore.user) {
-      navigate(`/MainPage#Users`);
+    if (
+      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email) &&
+      data.password.length > 8
+    ) {
+      await authStore.SignIn(data);
+
+      if (authStore.user) {
+        navigate(`/MainPage#Users`);
+      } else {
+        setMessage(true);
+      }
     } else {
-      alert("Login Failed");
+      setMessage(true);
+      setTimeout(() => {
+        setMessage(false);
+      }, 3000);
     }
   };
-
   return (
     <div className="wrapper">
       <div className={`login_form ${open ? "" : "is_closed"}`}>
@@ -65,6 +75,7 @@ const LoginForm: React.FC = () => {
                 <InputText
                   className="text-base w-full"
                   id="email"
+                  keyfilter="email"
                   onChange={handleChange}
                   required
                   name="email"
@@ -83,6 +94,11 @@ const LoginForm: React.FC = () => {
                 toggleMask
               />
             </div>
+            {message ? (
+              <p style={{ color: "red" }}>Invalid Email or Password</p>
+            ) : (
+              <></>
+            )}
             <div className="password"></div>
             <Button
               className="login-btn"

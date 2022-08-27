@@ -34,7 +34,6 @@ const AddUsersForm: React.FC<Props> = ({ hideDialog, save, fetch }) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     data.username = data.username.toLowerCase();
-    await authStore.Register(data);
     if (data.fullName === "" || data.password === "" || data.isAdmin === "") {
       setShowError(true);
     } else if (data.username === "") {
