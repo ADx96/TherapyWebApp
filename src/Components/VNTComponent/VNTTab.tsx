@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import "../MainPageForm/Tabs.scss";
 import { useNavigate } from "react-router-dom";
 
-import TherapyDetailsPage from "../../Pages/TherapyDetailsPage";
+import VNTPage from "../../Pages/VNTPage";
 
-const DetailsPageTab: React.FC = () => {
+const VNTTab: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,11 +36,11 @@ const DetailsPageTab: React.FC = () => {
             width: "102%",
           }}
         >
-          <TherapyDetailsPage />
+          <VNTPage />
         </div>
       </div>
     </div>
   );
 };
 
-export default DetailsPageTab;
+export default VNTTab;

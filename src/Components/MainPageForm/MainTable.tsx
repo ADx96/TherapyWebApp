@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { observer } from "mobx-react";
-import { Calendar } from "primereact/calendar";
+
 import { useTranslation } from "react-i18next";
 import { Toolbar } from "primereact/toolbar";
 import "./MainTable.scss";
@@ -19,12 +19,9 @@ const MainTable: React.FC = () => {
   const { t } = useTranslation();
   const [data, setData] = useState<any>([]);
   const navigate = useNavigate();
-  const [productDialog, setProductDialog] = useState(false);
   const [toggle, setToggle] = useState(false);
-  const [UpdateDialog, setUpdateDialog] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [globalFilter, setGlobalFilter] = useState<any>(null);
-  const [datefilter1, setDateFilter1] = useState<any>(null);
 
   const toast = useRef<any>(null);
   const dt = useRef<any>(null);
@@ -40,14 +37,8 @@ const MainTable: React.FC = () => {
   }, []);
 
   const HandleNavigation = (text: string, id: number) => {
-    navigate(`${text}/${id}`);
+    navigate(`${text}${id}`);
   };
-
-  // const fetch = async () => {
-  //   await inspectionStore.getInspections();
-  //   const data: any = inspectionStore.Inspections;
-  //   setInspections(data);
-  // };
 
   const header = (
     <div className="table-header">
@@ -133,7 +124,7 @@ const MainTable: React.FC = () => {
       <>
         <div>
           <Button
-            onClick={() => HandleNavigation("/Users/UserDetails", rowData.id)}
+            onClick={() => HandleNavigation("/Users/UserDetails/", rowData.id)}
             style={{ marginLeft: "4px" }}
             className="p-button-rounded p-button-success p-mr-2"
           >
@@ -143,6 +134,7 @@ const MainTable: React.FC = () => {
         <div>
           <Button
             style={{ marginLeft: "4px" }}
+            onClick={() => HandleNavigation("/Users/VFT/", rowData.id)}
             className="p-button-rounded p-button-success p-mr-2"
           >
             VFT
@@ -150,6 +142,7 @@ const MainTable: React.FC = () => {
         </div>
         <div>
           <Button
+            onClick={() => HandleNavigation("/Users/VFT/", rowData.id)}
             style={{ marginLeft: "4px" }}
             className="p-button-rounded p-button-success p-mr-2"
           >
@@ -159,23 +152,6 @@ const MainTable: React.FC = () => {
       </>
     );
   };
-
-  const renderDateFilter = () => {
-    return (
-      <Calendar
-        value={datefilter1}
-        onChange={(e: any) => {
-          dt.current.filter(e.value, "date1", "custom");
-          setDateFilter1(e.value);
-        }}
-        placeholder="Date"
-        dateFormat="mm/dd/yy"
-        className="p-column-filter"
-      />
-    );
-  };
-
-  const DateFilter = renderDateFilter();
 
   return (
     <div className="inspections-table">

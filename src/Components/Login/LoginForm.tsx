@@ -33,9 +33,12 @@ const LoginForm: React.FC = () => {
       await authStore.SignIn(data);
 
       if (authStore.user) {
-        navigate(`/MainPage#Users`);
+        navigate(`/Users`);
       } else {
         setMessage(true);
+        setTimeout(() => {
+          setMessage(false);
+        }, 3000);
       }
     } else {
       setMessage(true);

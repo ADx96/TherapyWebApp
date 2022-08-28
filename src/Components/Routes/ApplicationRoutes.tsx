@@ -5,6 +5,10 @@ import MainPageTabs from "../MainPageForm/MainPageTabs";
 import Navbar from "../Navbar/Navbar";
 import PageNotFound from "../../Pages/PageNotFound";
 import DetailsPageTab from "../DetailsPageComponent/DetailsPageTab";
+import VFTPage from "../../Pages/VFTPage";
+import VNTPage from "../../Pages/VNTPage";
+import VFTTab from "../VNTComponent/DetailsPageTab";
+import VNTTab from "../VNTComponent/VNTTab";
 
 const ApplicationRoutes: React.FC = () => {
   const { pathname } = useLocation();
@@ -17,6 +21,8 @@ const ApplicationRoutes: React.FC = () => {
         <Route path="/" element={<Login />} />
         <Route path="/Users" element={<MainPageTabs />} />
         <Route path="/Users/UserDetails/:id" element={<DetailsPageTab />} />
+        <Route path="/Users/VFT/:id" element={<VFTTab />} />
+        <Route path="/Users/VNT/:id" element={<VNTTab />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>
