@@ -6,7 +6,7 @@ import usersStore from "../../Mobx/UsersStore";
 import { observer } from "mobx-react";
 
 const AboutUser: React.FC = () => {
-  const [data, setData] = useState<string[]>([]);
+  const [data, setData] = useState<any>([]);
 
   const { id } = useParams();
 
@@ -14,7 +14,7 @@ const AboutUser: React.FC = () => {
     async function fetchData() {
       await usersStore.getUserTherapy(id!);
       const UserData = usersStore.UserData;
-      setData({ ...UserData });
+      setData(UserData);
     }
 
     fetchData();
@@ -22,7 +22,7 @@ const AboutUser: React.FC = () => {
 
   return (
     <div className="card">
-      <h2>About Mohamed</h2>
+      <h2>About {data.name}</h2>
       <DataTable
         value={[data]}
         dataKey="id"
@@ -31,17 +31,7 @@ const AboutUser: React.FC = () => {
         showGridlines
         responsiveLayout="scroll"
       >
-        <Column
-          body={(rowData) => (
-            <div>
-              <span className="p-column-title">Name</span>
-              {rowData.name}
-            </div>
-          )}
-          field="name"
-          header="Name"
-          style={{ width: "10%" }}
-        />
+        <Column field="name" header="Name" style={{ width: "10%" }} />
         <Column field="gender" header="Gender" style={{ width: "10%" }} />
         <Column field="yob" header="YOB" style={{ width: "10%" }} />
         <Column field="created_at" header="RegDate" style={{ width: "10%" }} />

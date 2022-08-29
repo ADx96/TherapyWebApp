@@ -3,10 +3,9 @@ import Login from "../../Pages/Login";
 import { Routes, Route, useLocation } from "react-router-dom";
 import MainPageTabs from "../MainPageForm/MainPageTabs";
 import Navbar from "../Navbar/Navbar";
+import "../GlobalStyles/Styles.css";
 import PageNotFound from "../../Pages/PageNotFound";
 import DetailsPageTab from "../DetailsPageComponent/DetailsPageTab";
-import VFTPage from "../../Pages/VFTPage";
-import VNTPage from "../../Pages/VNTPage";
 import VFTTab from "../VNTComponent/DetailsPageTab";
 import VNTTab from "../VNTComponent/VNTTab";
 
